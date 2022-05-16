@@ -16,6 +16,7 @@ export default new Router({
             component: Clients
         },
         {
+            // 
             path: "/details",
             name: 'client',
             component: ClientInfo

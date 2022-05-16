@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-header />
+      <my-header />
     </v-app-bar>
     <v-main>
       <v-container>
@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import VHeader from "@/components/VHeader.vue";
+import MyHeader from "@/components/MyHeader.vue";
 
 export default {
   name: 'App',
 
   components: {
-    VHeader
+    MyHeader
   },
 
   data: () => ({

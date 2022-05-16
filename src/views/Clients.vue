@@ -1,15 +1,28 @@
-    <template>
-    <v-col cols="12" sm="8" offset-sm="3">
+<template>
+    <v-col cols="12" sm="12" offset-sm="12" class="mt-10">
+        <my-welcome-message :alertWindow="alertWindow" :alertText="alertText" @alertClose="alertClose" />
         <v-card>
-            <v-list two-line subheader>
+            <v-card-title class="white--text orange darken-4">
+                Clients Directory
+                <v-spacer></v-spacer>
+                <v-dialog v-model="dialog" persistent max-width="600px">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn v-bind="attrs" v-on="on" fab class="text--primary">
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
+                    </template>
+                    <my-form @send="send" @close="close" />
+                </v-dialog>
+            </v-card-title>
+            <v-list three-line subheader>
                 <v-list-item v-for="item in clients" :key="item.title" link>
-                    <v-list-item-avatar size="50" color="white" class="mx-20 pointer">
-                        <v-img :src="item.avatar"></v-img>
+                    <v-list-item-avatar size="56" color="white" class="mx-20 pointer">
+                        <v-avatar color="primary" size="56" class="white--text">
+                            {{ item.name[0] }}
+                        </v-avatar>
                     </v-list-item-avatar>
-
                     <v-list-item-content>
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
-
                         <v-list-item-subtitle>{{ item.email }}</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-btn plain to="/details">
@@ -25,28 +38,39 @@
 </template>
 
 <script>
+import MyWelcomeMessage from "@/components/MyWelcomeMessage.vue";
+import MyForm from "@/components/MyForm.vue";
 export default {
+    components: { MyWelcomeMessage, MyForm },
+    name: "clients",
     data: () => ({
         dialog: false,
         clients: [],
+        alertWindow: true,
+        alertText: "Open :)",
     }),
     mounted() {
-        this.ClientsList()
+        this.clientsList()
     },
     methods: {
-        randomNumb(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        },
-        ClientsList() {
+
+        clientsList() {
             fetch('https://jsonplaceholder.typicode.com/users?_limit=7')
                 .then(response => response.json())
                 .then(jsonList => {
                     this.clients = jsonList;
-                    for (let client of this.clients) {
-                        client.avatar = `https://picsum.photos/id/${this.randomNumb(1, 50)}/200/300`
-                    }
-
                 })
+        },
+        async send(newClient) {
+            // 
+            this.clients.push(newClient)
+            this.dialog = false;
+        },
+        close() {
+            this.dialog = false;
+        },
+        alertClose(bool) {
+            this.alertWindow = bool;
         }
     },
 }

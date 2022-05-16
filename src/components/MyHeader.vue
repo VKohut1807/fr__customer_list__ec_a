@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name: 'v-header',
+    name: 'my-header',
     data: () => ({
         menuItems: [
             {
