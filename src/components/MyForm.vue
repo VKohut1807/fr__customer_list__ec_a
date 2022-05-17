@@ -74,6 +74,7 @@ export default {
             }
         },
         send() {
+            this.client.id = Date.now();
             this.$emit("send", this.client);
         },
         replace() {

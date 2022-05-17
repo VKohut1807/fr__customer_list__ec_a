@@ -25,7 +25,7 @@
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
                         <v-list-item-subtitle>{{ item.email }}</v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-btn plain to="/details">
+                    <v-btn plain :to="{ name: 'client', params: { clientId: item.id } }">
                         <v-icon color="deep-orange lighten-2">
                             mdi-information
                         </v-icon>
@@ -46,15 +46,15 @@ export default {
     data: () => ({
         dialog: false,
         clients: [],
-        alertWindow: true,
+        alertWindow: false,
         alertText: "Open :)",
     }),
     mounted() {
         this.clientsList()
     },
     methods: {
-
         clientsList() {
+            // 
             fetch('https://jsonplaceholder.typicode.com/users?_limit=7')
                 .then(response => response.json())
                 .then(jsonList => {
