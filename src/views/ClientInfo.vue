@@ -82,35 +82,40 @@ export default {
     name: "client-info",
     components: { MyForm, MyWelcomeMessage },
     data: () => ({
+        openClientId: "",
         client: {
-            "id": 2,
-            "name": "Ervin Howell",
-            "username": "Antonette",
-            "email": "Shanna@melissa.tv",
+            "name": "",
+            "email": "",
             "address": {
-                "street": "Victor Plains",
-                "suite": "Suite 879",
-                "city": "Wisokyburgh",
-                "zipcode": "90566-7771",
-                "geo": {
-                    "lat": "-43.9509",
-                    "lng": "-34.4618"
-                }
+                "street": "",
+                "city": "",
+                "zipcode": "",
             },
-            "phone": "010-692-6593 x09125",
-            "website": "anastasia.net",
+            "phone": "",
             "company": {
-                "name": "Deckow-Crist",
-                "catchPhrase": "Proactive didactic contingency",
-                "bs": "synergize scalable supply-chains"
+                "name": "",
+                "bs": ""
             }
         },
         dialog: false,
         editDialog: true,
-        alertWindow: true,
+        alertWindow: false,
         alertText: "Open :)",
     }),
+    mounted() {
+        this.openClient()
+    },
     methods: {
+        async openClient() {
+            // 
+            this.openClientId = Number(this.$route.params.clientId);
+            fetch(`https://jsonplaceholder.typicode.com/users/${this.openClientId}`)
+                .then(response => response.json())
+                .then(cl => {
+                    this.client = cl;
+                })
+
+        },
         async replaceClient(changedClient) {
             this.dialog = false;
             // 
@@ -133,11 +138,12 @@ export default {
             }
         },
         close() {
+            console.log("id", this.openClientId);
             this.dialog = false;
         },
         alertClose(bool) {
             this.alertWindow = bool;
-        }
+        },
     },
 };
 </script>
