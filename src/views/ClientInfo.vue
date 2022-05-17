@@ -78,6 +78,9 @@
 <script>
 import MyForm from "@/components/MyForm.vue";
 import MyWelcomeMessage from "@/components/MyWelcomeMessage.vue";
+const API_URL_CLIENTS = "http://localhost:4000/clients";
+const API_URL_CLIENT = "http://localhost:4000/client/";
+
 export default {
     name: "client-info",
     components: { MyForm, MyWelcomeMessage },
@@ -107,9 +110,26 @@ export default {
     },
     methods: {
         async openClient() {
-            // 
             this.openClientId = Number(this.$route.params.clientId);
-            fetch(`https://jsonplaceholder.typicode.com/users/${this.openClientId}`)
+            // this.axios
+            //     .get(API_URL_CLIENT + this.openClientId)
+            //     .then((res) => {
+            //         if (res.data.client) {
+            //     console.log(res.data.client.name + res.data.message);
+            //     this.user = res.data.logUser;
+            // }
+            //   else {
+            //     console.log(res.data.message);
+            // }
+            //         this.clients = res;
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            // 
+            // 
+            fetch(`https://jsonplaceholder.typicode.com/users/${this.openClientId
+                }`)
                 .then(response => response.json())
                 .then(cl => {
                     this.client = cl;
@@ -117,10 +137,26 @@ export default {
 
         },
         async replaceClient(changedClient) {
-            this.dialog = false;
+            // await this.axios
+            //     .put(API_URL_CLIENTS, changedClient)
+            //     .then((res) => {
+            //         console.log(res.data.message);
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
             // 
+            this.dialog = false;
         },
         async deleteClient(id) {
+            // await this.axios
+            //     .delete(API_URL_CLIENTS, { data: { _id: id } })
+            //     .then((res) => {
+            //         console.log(res.data.message);
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
             // 
             this.client = {
                 "name": "",

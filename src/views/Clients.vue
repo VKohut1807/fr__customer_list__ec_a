@@ -40,6 +40,8 @@
 <script>
 import MyWelcomeMessage from "@/components/MyWelcomeMessage.vue";
 import MyForm from "@/components/MyForm.vue";
+const API_URL_CLIENTS = "http://localhost:4000/clients";
+
 export default {
     components: { MyWelcomeMessage, MyForm },
     name: "clients",
@@ -54,6 +56,17 @@ export default {
     },
     methods: {
         clientsList() {
+            // this.axios
+            //     .get(API_URL_CLIENTS)
+            //     .then((res) => {
+            //         if (res.data.length < 0) {
+            //             return;
+            //         }
+            //         this.clients = res;
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
             // 
             fetch('https://jsonplaceholder.typicode.com/users?_limit=7')
                 .then(response => response.json())
@@ -62,6 +75,15 @@ export default {
                 })
         },
         async send(newClient) {
+            // await this.axios
+            //     .post(API_URL_CLIENTS, newClient)
+            //     .then((res) => {
+            //         console.log(res.data.message);
+            //         this.clientsList();
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
             // 
             this.clients.push(newClient)
             this.dialog = false;
