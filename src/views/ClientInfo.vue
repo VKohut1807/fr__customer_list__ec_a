@@ -88,16 +88,12 @@ export default {
         client: {
             "name": "",
             "email": "",
-            "address": {
-                "street": "",
-                "city": "",
-                "zipcode": "",
-            },
+            "address_street": "",
+            "address_city": "",
+            "address_zipcode": "",
             "phone": "",
-            "company": {
-                "name": "",
-                "bs": ""
-            }
+            "company_name": "",
+            "company_bs": ""
         },
         dialog: false,
         editDialog: true,
