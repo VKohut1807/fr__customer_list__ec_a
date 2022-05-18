@@ -9,13 +9,13 @@
                     <v-row>
                         <v-col cols="12" sm="12" md="12">
                             <v-text-field v-model.trim="client.name" label="Client Name"></v-text-field>
-                            <v-text-field v-model.trim="client.company.bs" label="Direction work"></v-text-field>
-                            <v-text-field v-model.trim="client.company.name" label="Company Name"></v-text-field>
+                            <v-text-field v-model.trim="client.company_bs" label="Direction work"></v-text-field>
+                            <v-text-field v-model.trim="client.company_name" label="Company Name"></v-text-field>
                             <v-text-field v-model.trim="client.phone" label="Mobile Phone"></v-text-field>
                             <v-text-field v-model.trim="client.email" label="Personal Mail"></v-text-field>
-                            <v-text-field v-model.trim="client.address.street" label="Street"></v-text-field>
-                            <v-text-field v-model.trim="client.address.city" label="City"></v-text-field>
-                            <v-text-field v-model.trim="client.address.zipcode" label="Zipcode"></v-text-field>
+                            <v-text-field v-model.trim="client.address_street" label="Street"></v-text-field>
+                            <v-text-field v-model.trim="client.address_city" label="City"></v-text-field>
+                            <v-text-field v-model.trim="client.address_zipcode" label="Zipcode"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -52,16 +52,12 @@ export default {
         client: {
             "name": "",
             "email": "",
-            "address": {
-                "street": "",
-                "city": "",
-                "zipcode": "",
-            },
+            "address_street": "",
+            "address_city": "",
+            "address_zipcode": "",
             "phone": "",
-            "company": {
-                "name": "",
-                "bs": ""
-            }
+            "company_name": "",
+            "company_bs": ""
         },
     }),
     mounted() {
@@ -74,7 +70,6 @@ export default {
             }
         },
         send() {
-            this.client.id = Date.now();
             this.$emit("send", this.client);
         },
         replace() {
