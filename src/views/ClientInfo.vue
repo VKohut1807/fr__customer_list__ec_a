@@ -15,8 +15,8 @@
             <v-list-item>
                 <v-list-item-action></v-list-item-action>
                 <v-list-item-content>
-                    <v-list-item-title>{{ client.company.bs }}</v-list-item-title>
-                    <v-list-item-subtitle>Company, {{ client.company.name }}</v-list-item-subtitle>
+                    <v-list-item-title>{{ client.company_bs }}</v-list-item-title>
+                    <v-list-item-subtitle>Company, {{ client.company_name }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
             <v-divider inset></v-divider>
@@ -55,8 +55,8 @@
                     </v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                    <v-list-item-title>{{ client.address.street }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ client.address.city }}, {{ client.address.zipcode }}
+                    <v-list-item-title>{{ client.address_street }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ client.address_city }}, {{ client.address_zipcode }}
                     </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
@@ -78,8 +78,7 @@
 <script>
 import MyForm from "@/components/MyForm.vue";
 import MyWelcomeMessage from "@/components/MyWelcomeMessage.vue";
-const API_URL_CLIENTS = "http://localhost:4000/clients";
-const API_URL_CLIENT = "http://localhost:4000/client/";
+const API_URL_CLIENTS = "http://127.0.0.1:8000/api/clients/";
 
 export default {
     name: "client-info",
@@ -102,7 +101,7 @@ export default {
         },
         dialog: false,
         editDialog: true,
-        alertWindow: false,
+        alertWindow: true,
         alertText: "Open :)",
     }),
     mounted() {
@@ -111,70 +110,42 @@ export default {
     methods: {
         async openClient() {
             this.openClientId = Number(this.$route.params.clientId);
-            // this.axios
-            //     .get(API_URL_CLIENT + this.openClientId)
-            //     .then((res) => {
-            //         if (res.data.client) {
-            //     console.log(res.data.client.name + res.data.message);
-            //     this.user = res.data.logUser;
-            // }
-            //   else {
-            //     console.log(res.data.message);
-            // }
-            //         this.clients = res;
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            // 
-            // 
-            fetch(`https://jsonplaceholder.typicode.com/users/${this.openClientId
-                }`)
-                .then(response => response.json())
-                .then(cl => {
-                    this.client = cl;
+            await this.axios
+                .get(API_URL_CLIENTS + this.openClientId)
+                .then((res) => {
+                    this.client = res.data;
+                    console.log(this.client);
                 })
-
+                .catch((error) => {
+                    if (error.response.status === 404) {
+                        this.$router.push('/404')
+                    }
+                    console.log(error);
+                });
         },
         async replaceClient(changedClient) {
-            // await this.axios
-            //     .put(API_URL_CLIENTS, changedClient)
-            //     .then((res) => {
-            //         console.log(res.data.message);
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            // 
+            await this.axios
+                .put(API_URL_CLIENTS + this.client.id, changedClient)
+                .then((res) => {
+                    console.log(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
             this.dialog = false;
         },
         async deleteClient(id) {
-            // await this.axios
-            //     .delete(API_URL_CLIENTS, { data: { _id: id } })
-            //     .then((res) => {
-            //         console.log(res.data.message);
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            // 
-            this.client = {
-                "name": "",
-                "email": "",
-                "address": {
-                    "street": "",
-                    "city": "",
-                    "zipcode": "",
-                },
-                "phone": "",
-                "company": {
-                    "name": "",
-                    "bs": ""
-                }
-            }
+            await this.axios
+                .delete(API_URL_CLIENTS + id)
+                .then((res) => {
+                    this.openClient();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         close() {
-            console.log("id", this.openClientId);
             this.dialog = false;
         },
         alertClose(bool) {

@@ -15,7 +15,7 @@
                 </v-dialog>
             </v-card-title>
             <v-list three-line subheader>
-                <v-list-item v-for="item in clients" :key="item.title" link>
+                <v-list-item v-for="(item, index) in clients" :key="index" link>
                     <v-list-item-avatar size="56" color="white" class="mx-20 pointer">
                         <v-avatar color="primary" size="56" class="white--text">
                             {{ item.name[0] }}
@@ -32,6 +32,7 @@
                         more details...
                     </v-btn>
                 </v-list-item>
+                <v-list-item v-if="clients.length <= 0">No data available</v-list-item>
             </v-list>
         </v-card>
     </v-col>
@@ -40,7 +41,7 @@
 <script>
 import MyWelcomeMessage from "@/components/MyWelcomeMessage.vue";
 import MyForm from "@/components/MyForm.vue";
-const API_URL_CLIENTS = "http://localhost:4000/clients";
+const API_URL_CLIENTS = "http://127.0.0.1:8000/api/clients";
 
 export default {
     components: { MyWelcomeMessage, MyForm },
@@ -48,44 +49,37 @@ export default {
     data: () => ({
         dialog: false,
         clients: [],
-        alertWindow: false,
+        alertWindow: true,
         alertText: "Open :)",
     }),
     mounted() {
         this.clientsList()
     },
     methods: {
-        clientsList() {
-            // this.axios
-            //     .get(API_URL_CLIENTS)
-            //     .then((res) => {
-            //         if (res.data.length < 0) {
-            //             return;
-            //         }
-            //         this.clients = res;
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            // 
-            fetch('https://jsonplaceholder.typicode.com/users?_limit=7')
-                .then(response => response.json())
-                .then(jsonList => {
-                    this.clients = jsonList;
+        async clientsList() {
+            await this.axios
+                .get(API_URL_CLIENTS)
+                .then((res) => {
+                    if (res.data.data.length < 0) {
+                        return;
+                    }
+                    this.clients = res.data.data;
+                    console.log("this.res", res);
                 })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         async send(newClient) {
-            // await this.axios
-            //     .post(API_URL_CLIENTS, newClient)
-            //     .then((res) => {
-            //         console.log(res.data.message);
-            //         this.clientsList();
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            // 
-            this.clients.push(newClient)
+            await this.axios
+                .post(API_URL_CLIENTS, newClient)
+                .then((res) => {
+                    console.log(res.data);
+                    this.clientsList();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             this.dialog = false;
         },
         close() {

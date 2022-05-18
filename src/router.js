@@ -16,13 +16,14 @@ export default new Router({
             component: Clients
         },
         {
-            path: "/client/:clientId",
+            path: "/clients/:clientId",
             name: 'client',
             component: ClientInfo
         },
         {
-            path: "*",
+            path: "/404",
             component: NotFoundPage
-        }
+        },
+        { path: '*', redirect: "/404" }
     ]
 })
